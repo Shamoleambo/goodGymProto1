@@ -37,7 +37,7 @@ public class ExerciseService {
 	public Exercise updateExercise(Long id, Exercise updtExercise) {
 		Exercise exercise = exerciseRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
-		exercise.setDay(updtExercise.getDay());
+		exercise.setWorkoutDay(updtExercise.getWorkoutDay());
 		exercise.setExerciseLoad(updtExercise.getExerciseLoad());
 		exercise.setName(updtExercise.getName());
 		exercise.setScore(updtExercise.getScore());
