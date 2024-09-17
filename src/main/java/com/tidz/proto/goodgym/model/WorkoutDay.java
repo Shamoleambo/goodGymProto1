@@ -14,7 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-public class Day {
+public class WorkoutDay {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

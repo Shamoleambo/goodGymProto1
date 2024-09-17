@@ -27,7 +27,7 @@ public class Exercise {
 
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "day_id")
-	private Day day;
+	private WorkoutDay day;
 
 	public Long getId() {
 		return id;
@@ -61,11 +61,11 @@ public class Exercise {
 		this.score = score;
 	}
 
-	public Day getDay() {
+	public WorkoutDay getDay() {
 		return day;
 	}
 
-	public void setDay(Day day) {
+	public void setDay(WorkoutDay day) {
 		this.day = day;
 	}
 
