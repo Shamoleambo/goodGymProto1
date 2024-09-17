@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +33,12 @@ public class ExerciseController {
 	public ResponseEntity<List<Exercise>> getAllExercises() {
 		List<Exercise> exercises = exerciseService.getAllExercises();
 		return ResponseEntity.ok(exercises);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<Exercise> getExerciseById(@PathVariable("id") Long id) {
+		Exercise exercise = exerciseService.getExerciseById(id);
+		return ResponseEntity.ok(exercise);
 	}
 
 }
