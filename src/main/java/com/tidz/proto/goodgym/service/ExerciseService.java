@@ -27,7 +27,18 @@ public class ExerciseService {
 
 	public Exercise getExerciseById(Long id) {
 		return exerciseRepository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise Broh!"));
+				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
+	}
+
+	public Exercise updateExercise(Long id, Exercise updtExercise) {
+		Exercise exercise = exerciseRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
+		exercise.setDay(updtExercise.getDay());
+		exercise.setExerciseLoad(updtExercise.getExerciseLoad());
+		exercise.setName(updtExercise.getName());
+		exercise.setScore(updtExercise.getScore());
+
+		return exerciseRepository.save(exercise);
 	}
 
 }
