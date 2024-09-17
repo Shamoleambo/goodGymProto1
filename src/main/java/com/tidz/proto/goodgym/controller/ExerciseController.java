@@ -2,6 +2,7 @@ package com.tidz.proto.goodgym.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.response.ApiResponse;
 import com.tidz.proto.goodgym.service.ExerciseService;
@@ -38,8 +40,12 @@ public class ExerciseController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse> getExerciseById(@PathVariable("id") Long id) {
-		Exercise exercise = exerciseService.getExerciseById(id);
-		return ResponseEntity.ok(new ApiResponse("Exercise " + id, exercise));
+		try {
+			Exercise exercise = exerciseService.getExerciseById(id);
+			return ResponseEntity.ok(new ApiResponse("Exercise " + id, exercise));
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
 	}
 
 }
