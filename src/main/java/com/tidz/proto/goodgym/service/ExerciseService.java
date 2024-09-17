@@ -45,4 +45,11 @@ public class ExerciseService {
 		return exerciseRepository.save(exercise);
 	}
 
+	@Transactional
+	public void deleteExercise(Long id) {
+		exerciseRepository.findById(id).ifPresentOrElse(exerciseRepository::delete, () -> {
+			throw new ResourceNotFoundException("Could not find the Exercise " + id);
+		});
+	}
+
 }
