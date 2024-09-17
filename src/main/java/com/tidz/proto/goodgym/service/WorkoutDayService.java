@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import com.tidz.proto.goodgym.model.WorkoutDay;
 import com.tidz.proto.goodgym.repository.WorkoutDayRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class WorkoutDayService {
 
@@ -14,6 +16,7 @@ public class WorkoutDayService {
 		this.workoutDayRepository = dayRepository;
 	}
 
+	@Transactional
 	public WorkoutDay save(WorkoutDay day) {
 		return workoutDayRepository.save(day);
 	}
