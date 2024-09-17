@@ -27,7 +27,7 @@ public class Day {
 	private Integer totalScore;
 
 	@OneToMany(mappedBy = "day", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Exercise> exercises;
+	private List<Exercise> workout;
 
 	public Long getId() {
 		return id;
@@ -53,12 +53,12 @@ public class Day {
 		this.totalScore = totalScore;
 	}
 
-	public List<Exercise> getExercises() {
-		return exercises;
+	public List<Exercise> getWorkout() {
+		return workout;
 	}
 
-	public void setExercises(List<Exercise> exercises) {
-		this.exercises = exercises;
+	public void setWorkout(List<Exercise> workout) {
+		this.workout = workout;
 	}
 
 }
