@@ -20,8 +20,8 @@ public class Exercise {
 
 	@Column(name = "name")
 	private String name;
-	@Column(name = "load")
-	private Double load;
+	@Column(name = "exercise_load")
+	private Double exerciseLoad;
 	@Column(name = "score")
 	private Integer score;
 
@@ -45,12 +45,12 @@ public class Exercise {
 		this.name = name;
 	}
 
-	public Double getLoad() {
-		return load;
+	public Double getExerciseLoad() {
+		return exerciseLoad;
 	}
 
-	public void setLoad(Double load) {
-		this.load = load;
+	public void setExerciseLoad(Double exerciseLoad) {
+		this.exerciseLoad = exerciseLoad;
 	}
 
 	public Integer getScore() {
