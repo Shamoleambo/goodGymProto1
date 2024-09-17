@@ -1,5 +1,7 @@
 package com.tidz.proto.goodgym.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.model.Exercise;
@@ -16,6 +18,10 @@ public class ExerciseService {
 
 	public Exercise save(Exercise exercise) {
 		return exerciseRepository.save(exercise);
+	}
+
+	public List<Exercise> getAllExercises() {
+		return exerciseRepository.findAll();
 	}
 
 }
