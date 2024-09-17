@@ -28,8 +28,12 @@ public class ExerciseController {
 
 	@PostMapping("")
 	public ResponseEntity<ApiResponse> save(@RequestBody Exercise newExercise) {
-		Exercise exercise = exerciseService.save(newExercise);
-		return ResponseEntity.ok(new ApiResponse("Exercise Created", exercise));
+		try {
+			Exercise exercise = exerciseService.save(newExercise);
+			return ResponseEntity.ok(new ApiResponse("Exercise Created", exercise));
+		} catch (Exception e) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ApiResponse(e.getMessage(), null));
+		}
 	}
 
 	@GetMapping("")
