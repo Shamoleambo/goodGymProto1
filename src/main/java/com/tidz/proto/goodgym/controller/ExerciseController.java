@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tidz.proto.goodgym.model.Exercise;
+import com.tidz.proto.goodgym.response.ApiResponse;
 import com.tidz.proto.goodgym.service.ExerciseService;
 
 @RestController
@@ -24,21 +25,21 @@ public class ExerciseController {
 	}
 
 	@PostMapping("")
-	public ResponseEntity<Exercise> save(@RequestBody Exercise newExercise) {
+	public ResponseEntity<ApiResponse> save(@RequestBody Exercise newExercise) {
 		Exercise exercise = exerciseService.save(newExercise);
-		return ResponseEntity.ok(exercise);
+		return ResponseEntity.ok(new ApiResponse("Exercise Created", exercise));
 	}
 
 	@GetMapping("")
-	public ResponseEntity<List<Exercise>> getAllExercises() {
+	public ResponseEntity<ApiResponse> getAllExercises() {
 		List<Exercise> exercises = exerciseService.getAllExercises();
-		return ResponseEntity.ok(exercises);
+		return ResponseEntity.ok(new ApiResponse("All Exercises", exercises));
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Exercise> getExerciseById(@PathVariable("id") Long id) {
+	public ResponseEntity<ApiResponse> getExerciseById(@PathVariable("id") Long id) {
 		Exercise exercise = exerciseService.getExerciseById(id);
-		return ResponseEntity.ok(exercise);
+		return ResponseEntity.ok(new ApiResponse("Exercise " + id, exercise));
 	}
 
 }
