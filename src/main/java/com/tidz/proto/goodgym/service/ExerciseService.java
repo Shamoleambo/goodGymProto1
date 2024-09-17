@@ -8,6 +8,8 @@ import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class ExerciseService {
 
@@ -17,6 +19,7 @@ public class ExerciseService {
 		this.exerciseRepository = exerciseRepository;
 	}
 
+	@Transactional
 	public Exercise save(Exercise exercise) {
 		return exerciseRepository.save(exercise);
 	}
@@ -30,6 +33,7 @@ public class ExerciseService {
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 	}
 
+	@Transactional
 	public Exercise updateExercise(Long id, Exercise updtExercise) {
 		Exercise exercise = exerciseRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
