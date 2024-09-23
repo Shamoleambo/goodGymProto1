@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tidz.proto.goodgym.model.ExerciseRoutine;
 
-public interface ExerciseRepository extends JpaRepository<ExerciseRoutine, Long> {
+public interface ExerciseRoutineRepository extends JpaRepository<ExerciseRoutine, Long> {
 
 }

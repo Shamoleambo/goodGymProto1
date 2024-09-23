@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.ExerciseRoutine;
 import com.tidz.proto.goodgym.response.ApiResponse;
-import com.tidz.proto.goodgym.service.ExerciseService;
+import com.tidz.proto.goodgym.service.ExerciseRoutineService;
 
 @RestController
 @RequestMapping("/api/exercises")
 public class ExerciseController {
 
-	private final ExerciseService exerciseService;
+	private final ExerciseRoutineService exerciseService;
 
-	public ExerciseController(ExerciseService exerciseService) {
+	public ExerciseController(ExerciseRoutineService exerciseService) {
 		this.exerciseService = exerciseService;
 	}
 

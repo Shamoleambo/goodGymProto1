@@ -6,48 +6,48 @@ import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.ExerciseRoutine;
-import com.tidz.proto.goodgym.repository.ExerciseRepository;
+import com.tidz.proto.goodgym.repository.ExerciseRoutineRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class ExerciseService {
+public class ExerciseRoutineService {
 
-	private final ExerciseRepository exerciseRepository;
+	private final ExerciseRoutineRepository exerciseRoutineRepository;
 
-	public ExerciseService(ExerciseRepository exerciseRepository) {
-		this.exerciseRepository = exerciseRepository;
+	public ExerciseRoutineService(ExerciseRoutineRepository exerciseRoutineRepository) {
+		this.exerciseRoutineRepository = exerciseRoutineRepository;
 	}
 
 	@Transactional
 	public ExerciseRoutine save(ExerciseRoutine exercise) {
-		return exerciseRepository.save(exercise);
+		return exerciseRoutineRepository.save(exercise);
 	}
 
 	public List<ExerciseRoutine> getAllExercises() {
-		return exerciseRepository.findAll();
+		return exerciseRoutineRepository.findAll();
 	}
 
 	public ExerciseRoutine getExerciseById(Long id) {
-		return exerciseRepository.findById(id)
+		return exerciseRoutineRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 	}
 
 	@Transactional
 	public ExerciseRoutine updateExercise(Long id, ExerciseRoutine updtExercise) {
-		ExerciseRoutine exercise = exerciseRepository.findById(id)
+		ExerciseRoutine exercise = exerciseRoutineRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 		exercise.setWorkoutDay(updtExercise.getWorkoutDay());
 		exercise.setExerciseLoad(updtExercise.getExerciseLoad());
-		exercise.setName(updtExercise.getName());
+		exercise.setExercise(updtExercise.getExercise());
 		exercise.setScore(updtExercise.getScore());
 
-		return exerciseRepository.save(exercise);
+		return exerciseRoutineRepository.save(exercise);
 	}
 
 	@Transactional
 	public void deleteExercise(Long id) {
-		exerciseRepository.findById(id).ifPresentOrElse(exerciseRepository::delete, () -> {
+		exerciseRoutineRepository.findById(id).ifPresentOrElse(exerciseRoutineRepository::delete, () -> {
 			throw new ResourceNotFoundException("Could not find the Exercise " + id);
 		});
 	}
