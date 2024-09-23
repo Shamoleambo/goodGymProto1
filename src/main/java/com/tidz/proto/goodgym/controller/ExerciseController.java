@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,10 +52,21 @@ public class ExerciseController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ApiResponse> getExerciseById(@PathVariable Long id) {
+	public ResponseEntity<ApiResponse> getExerciseById(@PathVariable("id") Long id) {
 		try {
 			Exercise exerciseFound = exerciseService.getExerciseById(id);
 			return ResponseEntity.ok(new ApiResponse("Success", exerciseFound));
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<ApiResponse> updateExercise(@PathVariable("id") Long id, @RequestBody Exercise exercise) {
+		try {
+			exerciseService.updateExercise(id, exercise);
+			Exercise updtExercise = exerciseService.getExerciseById(id);
+			return ResponseEntity.ok(new ApiResponse("Success", updtExercise));
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
 		}
