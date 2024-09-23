@@ -50,4 +50,9 @@ public class ExerciseService {
 		});
 	}
 
+	@Transactional
+	public void deleteExerciseById(Long id) {
+		exerciseRepository.deleteById(id);
+	}
+
 }
