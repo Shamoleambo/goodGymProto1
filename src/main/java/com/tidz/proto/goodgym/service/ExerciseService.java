@@ -2,6 +2,7 @@ package com.tidz.proto.goodgym.service;
 
 import org.springframework.stereotype.Service;
 
+import com.tidz.proto.goodgym.exceptions.ResourceAlreadyExistsException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 
@@ -18,7 +19,12 @@ public class ExerciseService {
 
 	@Transactional
 	public Exercise save(Exercise exercise) {
-		return exerciseRepository.save(exercise);
+		Exercise newExercise = exerciseRepository.findByName(exercise.getName());
+		if (newExercise == null) {
+			return exerciseRepository.save(exercise);
+		} else {
+			throw new ResourceAlreadyExistsException("Resource " + exercise.getName() + " already exist");
+		}
 	}
 
 }
