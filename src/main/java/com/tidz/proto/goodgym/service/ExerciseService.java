@@ -2,6 +2,7 @@ package com.tidz.proto.goodgym.service;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceAlreadyExistsException;
@@ -37,6 +38,17 @@ public class ExerciseService {
 	public Exercise getExerciseById(Long id) {
 		return exerciseRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No exercise with id " + id + " found"));
+	}
+
+	@Transactional
+	public void updateExercise(Long id, Exercise updtExercise) {
+		exerciseRepository.findById(id).ifPresentOrElse(exercise -> {
+			exercise.setBodyArea(updtExercise.getBodyArea());
+			exercise.setName(updtExercise.getName());
+			exerciseRepository.save(exercise);
+		}, () -> {
+			throw new ResourceNotFoundException("No exercise with id " + id + " found");
+		});
 	}
 
 }
