@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceAlreadyExistsException;
+import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 
@@ -31,6 +32,11 @@ public class ExerciseService {
 
 	public List<Exercise> getAllExercises() {
 		return exerciseRepository.findAll();
+	}
+
+	public Exercise getExerciseById(Long id) {
+		return exerciseRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("No exercise with id " + id + " found"));
 	}
 
 }
