@@ -19,7 +19,7 @@ import com.tidz.proto.goodgym.response.ApiResponse;
 import com.tidz.proto.goodgym.service.ExerciseRoutineService;
 
 @RestController
-@RequestMapping("/api/exercises")
+@RequestMapping("/api/routines")
 public class ExerciseRoutineController {
 
 	private final ExerciseRoutineService exerciseRoutineService;
