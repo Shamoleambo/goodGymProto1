@@ -1,5 +1,7 @@
 package com.tidz.proto.goodgym.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceAlreadyExistsException;
@@ -25,6 +27,10 @@ public class ExerciseService {
 		} else {
 			throw new ResourceAlreadyExistsException("Resource " + exercise.getName() + " already exist");
 		}
+	}
+
+	public List<Exercise> getAllExercises() {
+		return exerciseRepository.findAll();
 	}
 
 }
