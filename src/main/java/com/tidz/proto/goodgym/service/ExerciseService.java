@@ -2,7 +2,6 @@ package com.tidz.proto.goodgym.service;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceAlreadyExistsException;
