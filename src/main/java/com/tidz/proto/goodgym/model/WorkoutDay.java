@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 
 @Entity
 public class WorkoutDay {
@@ -28,6 +27,20 @@ public class WorkoutDay {
 
 	@OneToMany(mappedBy = "workoutDay", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<Exercise> workout;
+
+	public WorkoutDay(LocalDate date, Integer totalScore, List<Exercise> workout) {
+		this.date = date;
+		this.totalScore = totalScore;
+
+		this.setExercisesOneByOne(workout);
+		this.workout = workout;
+	}
+
+	private void setExercisesOneByOne(List<Exercise> exercises) {
+		for (Exercise ex : exercises) {
+			ex.setWorkoutDay(this);
+		}
+	}
 
 	public Long getId() {
 		return id;
