@@ -26,9 +26,9 @@ public class WorkoutDay {
 	private Integer totalScore;
 
 	@OneToMany(mappedBy = "workoutDay", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<Exercise> workout;
+	private List<ExerciseRoutine> workout;
 
-	public WorkoutDay(LocalDate date, Integer totalScore, List<Exercise> workout) {
+	public WorkoutDay(LocalDate date, Integer totalScore, List<ExerciseRoutine> workout) {
 		this.date = date;
 		this.totalScore = totalScore;
 
@@ -36,8 +36,8 @@ public class WorkoutDay {
 		this.workout = workout;
 	}
 
-	private void setExercisesOneByOne(List<Exercise> exercises) {
-		for (Exercise ex : exercises) {
+	private void setExercisesOneByOne(List<ExerciseRoutine> exercises) {
+		for (ExerciseRoutine ex : exercises) {
 			ex.setWorkoutDay(this);
 		}
 	}
@@ -66,11 +66,11 @@ public class WorkoutDay {
 		this.totalScore = totalScore;
 	}
 
-	public List<Exercise> getWorkout() {
+	public List<ExerciseRoutine> getWorkout() {
 		return workout;
 	}
 
-	public void setWorkout(List<Exercise> workout) {
+	public void setWorkout(List<ExerciseRoutine> workout) {
 		this.workout = workout;
 	}
 

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
-import com.tidz.proto.goodgym.model.Exercise;
+import com.tidz.proto.goodgym.model.ExerciseRoutine;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 
 import jakarta.transaction.Transactional;
@@ -20,22 +20,22 @@ public class ExerciseService {
 	}
 
 	@Transactional
-	public Exercise save(Exercise exercise) {
+	public ExerciseRoutine save(ExerciseRoutine exercise) {
 		return exerciseRepository.save(exercise);
 	}
 
-	public List<Exercise> getAllExercises() {
+	public List<ExerciseRoutine> getAllExercises() {
 		return exerciseRepository.findAll();
 	}
 
-	public Exercise getExerciseById(Long id) {
+	public ExerciseRoutine getExerciseById(Long id) {
 		return exerciseRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 	}
 
 	@Transactional
-	public Exercise updateExercise(Long id, Exercise updtExercise) {
-		Exercise exercise = exerciseRepository.findById(id)
+	public ExerciseRoutine updateExercise(Long id, ExerciseRoutine updtExercise) {
+		ExerciseRoutine exercise = exerciseRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 		exercise.setWorkoutDay(updtExercise.getWorkoutDay());
 		exercise.setExerciseLoad(updtExercise.getExerciseLoad());

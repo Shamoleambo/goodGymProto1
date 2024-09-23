@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-public class Exercise {
+public class ExerciseRoutine {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
