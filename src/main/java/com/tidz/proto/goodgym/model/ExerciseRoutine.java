@@ -20,12 +20,14 @@ public class ExerciseRoutine {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name", nullable = false, length = 255)
-	private String name;
 	@Column(name = "exercise_load", nullable = false)
 	private Double exerciseLoad;
 	@Column(name = "score", nullable = false)
 	private Integer score;
+
+	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@JoinColumn(name = "exercise_id")
+	private Exercise exercise;
 
 	@JsonIgnore
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
@@ -40,12 +42,12 @@ public class ExerciseRoutine {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public Exercise getExercise() {
+		return exercise;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setExercise(Exercise exercise) {
+		this.exercise = exercise;
 	}
 
 	public Double getExerciseLoad() {
