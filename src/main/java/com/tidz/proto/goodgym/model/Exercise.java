@@ -1,5 +1,7 @@
 package com.tidz.proto.goodgym.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -25,6 +27,7 @@ public class Exercise {
 	@Column(name = "score", nullable = false)
 	private Integer score;
 
+	@JsonIgnore
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
 	@JoinColumn(name = "workout_day_id")
 	private WorkoutDay workoutDay;
