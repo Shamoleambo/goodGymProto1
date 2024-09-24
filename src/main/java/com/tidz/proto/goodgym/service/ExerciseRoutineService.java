@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
+import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.model.ExerciseRoutine;
+import com.tidz.proto.goodgym.repository.ExerciseRepository;
 import com.tidz.proto.goodgym.repository.ExerciseRoutineRepository;
 
 import jakarta.transaction.Transactional;
@@ -14,14 +16,25 @@ import jakarta.transaction.Transactional;
 public class ExerciseRoutineService {
 
 	private final ExerciseRoutineRepository exerciseRoutineRepository;
+	private final ExerciseRepository exerciseRepository;
 
-	public ExerciseRoutineService(ExerciseRoutineRepository exerciseRoutineRepository) {
+	public ExerciseRoutineService(ExerciseRoutineRepository exerciseRoutineRepository,
+			ExerciseRepository exerciseRepository) {
 		this.exerciseRoutineRepository = exerciseRoutineRepository;
+		this.exerciseRepository = exerciseRepository;
 	}
 
 	@Transactional
-	public ExerciseRoutine save(ExerciseRoutine exercise) {
-		return exerciseRoutineRepository.save(exercise);
+	public ExerciseRoutine save(ExerciseRoutine exerciseRoutine) {
+		Exercise exercise = exerciseRepository.findByName(exerciseRoutine.getExercise().getName());
+		if (exercise == null) {
+			exerciseRoutine.getExercise().addRoutine(exerciseRoutine);
+			exerciseRepository.save(exerciseRoutine.getExercise());
+		} else {
+			exercise.addRoutine(exerciseRoutine);
+		}
+
+		return exerciseRoutineRepository.save(exerciseRoutine);
 	}
 
 	public List<ExerciseRoutine> getAllExercises() {

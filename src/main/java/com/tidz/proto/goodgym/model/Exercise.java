@@ -1,5 +1,6 @@
 package com.tidz.proto.goodgym.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -31,6 +32,14 @@ public class Exercise {
 	@OneToMany(mappedBy = "exercise", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
 	private List<ExerciseRoutine> routines;
+
+	public void addRoutine(ExerciseRoutine routine) {
+		if (routines == null) {
+			routines = new ArrayList<>();
+		}
+
+		routines.add(routine);
+	}
 
 	public Long getId() {
 		return id;
