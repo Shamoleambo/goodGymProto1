@@ -1,5 +1,6 @@
 package com.tidz.proto.goodgym.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -35,6 +36,10 @@ public class WorkoutDayService {
 			routine.setExercise(exercise);
 		}
 		return workoutDayRepository.save(day);
+	}
+
+	public List<WorkoutDay> getAllWorkoutDays() {
+		return workoutDayRepository.findAll();
 	}
 
 }

@@ -1,7 +1,12 @@
 package com.tidz.proto.goodgym.controller;
 
-import org.springframework.http.HttpStatus;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +32,17 @@ public class WorkoutDayController {
 			WorkoutDay newWorkoutDay = workoutDayService.save(workoutDay);
 			return ResponseEntity.ok(new ApiResponse("WorkoutDay created", newWorkoutDay));
 		} catch (Exception e) {
-			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ApiResponse(e.getMessage(), null));
+			return ResponseEntity.status(UNPROCESSABLE_ENTITY).body(new ApiResponse(e.getMessage(), null));
+		}
+	}
+
+	@GetMapping("")
+	public ResponseEntity<ApiResponse> getAllWorkoutDays() {
+		try {
+			List<WorkoutDay> workoutDays = workoutDayService.getAllWorkoutDays();
+			return ResponseEntity.ok(new ApiResponse("Success", workoutDays));
+		} catch (Exception e) {
+			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
 		}
 	}
 
