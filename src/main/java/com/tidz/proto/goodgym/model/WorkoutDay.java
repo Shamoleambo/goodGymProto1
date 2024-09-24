@@ -23,26 +23,38 @@ public class WorkoutDay {
 	@Column(name = "date")
 	private LocalDate date;
 	@Column(name = "total_score")
-	private Integer totalScore;
+	private Double totalScore;
 
 	@OneToMany(mappedBy = "workoutDay", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<ExerciseRoutine> workout;
-	
+
 	public WorkoutDay() {
-		
+
 	}
 
-	public WorkoutDay(LocalDate date, Integer totalScore, List<ExerciseRoutine> workout) {
+	public WorkoutDay(LocalDate date, List<ExerciseRoutine> workout) {
 		this.date = date;
-		this.totalScore = totalScore;
 
 		this.setExercisesOneByOne(workout);
+		this.calculateScore(workout);
 		this.workout = workout;
 	}
 
 	private void setExercisesOneByOne(List<ExerciseRoutine> exercises) {
 		for (ExerciseRoutine ex : exercises) {
 			ex.setWorkoutDay(this);
+		}
+	}
+
+	private void calculateScore(List<ExerciseRoutine> exercises) {
+		if (!exercises.isEmpty()) {
+			Double scoreSum = 0.0;
+			setTotalScore(scoreSum);
+			for (ExerciseRoutine ex : exercises) {
+				scoreSum += ex.getScore();
+			}
+
+			setTotalScore(scoreSum / exercises.size());
 		}
 	}
 
@@ -62,11 +74,11 @@ public class WorkoutDay {
 		this.date = date;
 	}
 
-	public Integer getTotalScore() {
+	public Double getTotalScore() {
 		return totalScore;
 	}
 
-	public void setTotalScore(Integer totalScore) {
+	public void setTotalScore(Double totalScore) {
 		this.totalScore = totalScore;
 	}
 
