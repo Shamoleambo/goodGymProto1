@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.model.ExerciseRoutine;
 import com.tidz.proto.goodgym.model.WorkoutDay;
@@ -40,6 +41,11 @@ public class WorkoutDayService {
 
 	public List<WorkoutDay> getAllWorkoutDays() {
 		return workoutDayRepository.findAll();
+	}
+
+	public WorkoutDay getWorkoutDayById(Long id) {
+		return workoutDayRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("No Workout day " + id));
 	}
 
 }
