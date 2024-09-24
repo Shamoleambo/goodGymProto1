@@ -1,6 +1,7 @@
 package com.tidz.proto.goodgym.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -26,14 +27,14 @@ public class ExerciseRoutineService {
 
 	@Transactional
 	public ExerciseRoutine save(ExerciseRoutine exerciseRoutine) {
-		Exercise exercise = exerciseRepository.findByName(exerciseRoutine.getExercise().getName());
-		if (exercise == null) {
-			exerciseRoutine.getExercise().addRoutine(exerciseRoutine);
-			exerciseRepository.save(exerciseRoutine.getExercise());
-		} else {
-			exercise.addRoutine(exerciseRoutine);
-		}
-		
+		Exercise exercise = Optional.ofNullable(exerciseRepository.findByName(exerciseRoutine.getExercise().getName()))
+				.orElseGet(() -> {
+					Exercise newExercise = new Exercise(exerciseRoutine.getExercise().getName(),
+							exerciseRoutine.getExercise().getBodyArea());
+					return exerciseRepository.save(newExercise);
+				});
+
+		exerciseRoutine.setExercise(exercise);
 		return exerciseRoutineRepository.save(exerciseRoutine);
 	}
 
