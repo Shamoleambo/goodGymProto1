@@ -27,6 +27,10 @@ public class WorkoutDay {
 
 	@OneToMany(mappedBy = "workoutDay", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<ExerciseRoutine> workout;
+	
+	public WorkoutDay() {
+		
+	}
 
 	public WorkoutDay(LocalDate date, Integer totalScore, List<ExerciseRoutine> workout) {
 		this.date = date;
