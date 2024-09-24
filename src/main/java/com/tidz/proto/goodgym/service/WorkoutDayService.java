@@ -36,7 +36,9 @@ public class WorkoutDayService {
 					});
 			routine.setExercise(exercise);
 		}
-		return workoutDayRepository.save(day);
+
+		WorkoutDay workoutDay = new WorkoutDay(day.getDate(), day.getWorkout());
+		return workoutDayRepository.save(workoutDay);
 	}
 
 	public List<WorkoutDay> getAllWorkoutDays() {
