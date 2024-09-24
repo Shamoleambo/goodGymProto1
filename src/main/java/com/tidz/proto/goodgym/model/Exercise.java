@@ -1,7 +1,8 @@
 package com.tidz.proto.goodgym.model;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -23,7 +24,7 @@ public class Exercise {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name", unique = true)
+	@Column(name = "name")
 	private String name;
 	@Column(name = "body_area")
 	@Enumerated(EnumType.STRING)
@@ -31,14 +32,17 @@ public class Exercise {
 
 	@OneToMany(mappedBy = "exercise", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
 			CascadeType.REFRESH })
+	@JsonIgnore
 	private List<ExerciseRoutine> routines;
 
-	public void addRoutine(ExerciseRoutine routine) {
-		if (routines == null) {
-			routines = new ArrayList<>();
-		}
+	public Exercise() {
 
-		routines.add(routine);
+	}
+
+	public Exercise(String name, BodyArea bodyArea) {
+		super();
+		this.name = name;
+		this.bodyArea = bodyArea;
 	}
 
 	public Long getId() {
@@ -63,6 +67,14 @@ public class Exercise {
 
 	public void setBodyArea(BodyArea bodyArea) {
 		this.bodyArea = bodyArea;
+	}
+
+	public List<ExerciseRoutine> getRoutines() {
+		return routines;
+	}
+
+	public void setRoutines(List<ExerciseRoutine> routines) {
+		this.routines = routines;
 	}
 
 }
