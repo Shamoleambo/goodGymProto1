@@ -33,7 +33,7 @@ public class ExerciseRoutineService {
 		} else {
 			exercise.addRoutine(exerciseRoutine);
 		}
-
+		
 		return exerciseRoutineRepository.save(exerciseRoutine);
 	}
 
