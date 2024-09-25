@@ -52,25 +52,19 @@ public class ExerciseRoutineService {
 	}
 
 	@Transactional
-	public ExerciseRoutine updateExercise(Long id, ExerciseRoutine updtExercise) {
-		Exercise exercise = Optional.ofNullable(exerciseRepository.findByName(updtExercise.getExercise().getName()))
-				.orElseGet(() -> {
-					Exercise newExercise = new Exercise(updtExercise.getExercise().getName(),
-							updtExercise.getExercise().getBodyArea());
-					return exerciseRepository.save(newExercise);
-				});
+	public ExerciseRoutine updateExercise(Long id, ExerciseRoutine updtRoutine) {
+		Exercise exercise = this.findExerciseByNameOrCreateANewOne(updtRoutine);
 
 		ExerciseRoutine routine = exerciseRoutineRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 
-		WorkoutDay day = workoutRepository.findAll().stream()
-				.filter(workoutDay -> workoutDay.getWorkout().contains(routine)).findFirst()
-				.orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
+		WorkoutDay day = this.findWorkoutDayThatContainsExerciseRoutine(routine);
 
-		routine.setWorkoutDay(updtExercise.getWorkoutDay());
-		routine.setExerciseLoad(updtExercise.getExerciseLoad());
+		routine.setWorkoutDay(updtRoutine.getWorkoutDay());
+		routine.setExerciseLoad(updtRoutine.getExerciseLoad());
 		routine.setExercise(exercise);
-		routine.setScore(updtExercise.getScore());
+		routine.setScore(updtRoutine.getScore());
+		routine.setWorkoutDay(day);
 
 		day.calculateScore(day.getWorkout());
 
@@ -82,6 +76,18 @@ public class ExerciseRoutineService {
 		exerciseRoutineRepository.findById(id).ifPresentOrElse(exerciseRoutineRepository::delete, () -> {
 			throw new ResourceNotFoundException("Could not find the Exercise " + id);
 		});
+	}
+
+	private Exercise findExerciseByNameOrCreateANewOne(ExerciseRoutine routine) {
+		return Optional.ofNullable(exerciseRepository.findByName(routine.getExercise().getName())).orElseGet(() -> {
+			Exercise newExercise = new Exercise(routine.getExercise().getName(), routine.getExercise().getBodyArea());
+			return exerciseRepository.save(newExercise);
+		});
+	}
+
+	private WorkoutDay findWorkoutDayThatContainsExerciseRoutine(ExerciseRoutine routine) {
+		return workoutRepository.findAll().stream().filter(workoutDay -> workoutDay.getWorkout().contains(routine))
+				.findFirst().orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
 	}
 
 }
