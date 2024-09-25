@@ -53,21 +53,28 @@ public class ExerciseRoutineService {
 
 	@Transactional
 	public ExerciseRoutine updateExercise(Long id, ExerciseRoutine updtExercise) {
-		ExerciseRoutine exercise = exerciseRoutineRepository.findById(id)
+		Exercise exercise = Optional.ofNullable(exerciseRepository.findByName(updtExercise.getExercise().getName()))
+				.orElseGet(() -> {
+					Exercise newExercise = new Exercise(updtExercise.getExercise().getName(),
+							updtExercise.getExercise().getBodyArea());
+					return exerciseRepository.save(newExercise);
+				});
+
+		ExerciseRoutine routine = exerciseRoutineRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 
 		WorkoutDay day = workoutRepository.findAll().stream()
-				.filter(workoutDay -> workoutDay.getWorkout().contains(exercise)).findFirst()
+				.filter(workoutDay -> workoutDay.getWorkout().contains(routine)).findFirst()
 				.orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
 
-		exercise.setWorkoutDay(updtExercise.getWorkoutDay());
-		exercise.setExerciseLoad(updtExercise.getExerciseLoad());
-		exercise.setExercise(updtExercise.getExercise());
-		exercise.setScore(updtExercise.getScore());
+		routine.setWorkoutDay(updtExercise.getWorkoutDay());
+		routine.setExerciseLoad(updtExercise.getExerciseLoad());
+		routine.setExercise(exercise);
+		routine.setScore(updtExercise.getScore());
 
 		day.calculateScore(day.getWorkout());
 
-		return exerciseRoutineRepository.save(exercise);
+		return exerciseRoutineRepository.save(routine);
 	}
 
 	@Transactional
