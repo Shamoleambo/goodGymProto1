@@ -46,7 +46,7 @@ public class WorkoutDay {
 		}
 	}
 
-	private void calculateScore(List<ExerciseRoutine> exercises) {
+	public void calculateScore(List<ExerciseRoutine> exercises) {
 		if (!exercises.isEmpty()) {
 			Double scoreSum = 0.0;
 			setTotalScore(scoreSum);

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.model.ExerciseRoutine;
+import com.tidz.proto.goodgym.model.WorkoutDay;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 import com.tidz.proto.goodgym.repository.ExerciseRoutineRepository;
+import com.tidz.proto.goodgym.repository.WorkoutDayRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -18,11 +20,13 @@ public class ExerciseRoutineService {
 
 	private final ExerciseRoutineRepository exerciseRoutineRepository;
 	private final ExerciseRepository exerciseRepository;
+	private final WorkoutDayRepository workoutRepository;
 
 	public ExerciseRoutineService(ExerciseRoutineRepository exerciseRoutineRepository,
-			ExerciseRepository exerciseRepository) {
+			ExerciseRepository exerciseRepository, WorkoutDayRepository workoutRepository) {
 		this.exerciseRoutineRepository = exerciseRoutineRepository;
 		this.exerciseRepository = exerciseRepository;
+		this.workoutRepository = workoutRepository;
 	}
 
 	@Transactional
@@ -51,10 +55,17 @@ public class ExerciseRoutineService {
 	public ExerciseRoutine updateExercise(Long id, ExerciseRoutine updtExercise) {
 		ExerciseRoutine exercise = exerciseRoutineRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
+
+		WorkoutDay day = workoutRepository.findAll().stream()
+				.filter(workoutDay -> workoutDay.getWorkout().contains(exercise)).findFirst()
+				.orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
+
 		exercise.setWorkoutDay(updtExercise.getWorkoutDay());
 		exercise.setExerciseLoad(updtExercise.getExerciseLoad());
 		exercise.setExercise(updtExercise.getExercise());
 		exercise.setScore(updtExercise.getScore());
+
+		day.calculateScore(day.getWorkout());
 
 		return exerciseRoutineRepository.save(exercise);
 	}
