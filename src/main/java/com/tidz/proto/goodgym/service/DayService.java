@@ -8,25 +8,25 @@ import org.springframework.stereotype.Service;
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.model.Workout;
-import com.tidz.proto.goodgym.model.WorkoutDay;
+import com.tidz.proto.goodgym.model.Day;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
-import com.tidz.proto.goodgym.repository.WorkoutDayRepository;
+import com.tidz.proto.goodgym.repository.DayRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class WorkoutDayService {
+public class DayService {
 
-	private final WorkoutDayRepository workoutDayRepository;
+	private final DayRepository workoutDayRepository;
 	private final ExerciseRepository exerciseRepository;
 
-	public WorkoutDayService(WorkoutDayRepository dayRepository, ExerciseRepository exerciseRepository) {
+	public DayService(DayRepository dayRepository, ExerciseRepository exerciseRepository) {
 		this.workoutDayRepository = dayRepository;
 		this.exerciseRepository = exerciseRepository;
 	}
 
 	@Transactional
-	public WorkoutDay save(WorkoutDay day) {
+	public Day save(Day day) {
 		for (Workout routine : day.getWorkout()) {
 			Exercise exercise = Optional.ofNullable(exerciseRepository.findByName(routine.getExercise().getName()))
 					.orElseGet(() -> {
@@ -37,15 +37,15 @@ public class WorkoutDayService {
 			routine.setExercise(exercise);
 		}
 
-		WorkoutDay workoutDay = new WorkoutDay(day.getDate(), day.getWorkout());
+		Day workoutDay = new Day(day.getDate(), day.getWorkout());
 		return workoutDayRepository.save(workoutDay);
 	}
 
-	public List<WorkoutDay> getAllWorkoutDays() {
+	public List<Day> getAllDays() {
 		return workoutDayRepository.findAll();
 	}
 
-	public WorkoutDay getWorkoutDayById(Long id) {
+	public Day getDayById(Long id) {
 		return workoutDayRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("No Workout day " + id));
 	}

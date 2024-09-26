@@ -15,24 +15,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
-import com.tidz.proto.goodgym.model.WorkoutDay;
+import com.tidz.proto.goodgym.model.Day;
 import com.tidz.proto.goodgym.response.ApiResponse;
-import com.tidz.proto.goodgym.service.WorkoutDayService;
+import com.tidz.proto.goodgym.service.DayService;
 
 @RestController
 @RequestMapping("/api/workout-days")
-public class WorkoutDayController {
+public class DayController {
 
-	private final WorkoutDayService workoutDayService;
+	private final DayService dayService;
 
-	public WorkoutDayController(WorkoutDayService workoutDayService) {
-		this.workoutDayService = workoutDayService;
+	public DayController(DayService dayService) {
+		this.dayService = dayService;
 	}
 
 	@PostMapping("")
-	public ResponseEntity<ApiResponse> saveWorkoutDay(@RequestBody WorkoutDay workoutDay) {
+	public ResponseEntity<ApiResponse> saveWorkoutDay(@RequestBody Day day) {
 		try {
-			WorkoutDay newWorkoutDay = workoutDayService.save(workoutDay);
+			Day newWorkoutDay = dayService.save(day);
 			return ResponseEntity.ok(new ApiResponse("WorkoutDay created", newWorkoutDay));
 		} catch (Exception e) {
 			return ResponseEntity.status(UNPROCESSABLE_ENTITY).body(new ApiResponse(e.getMessage(), null));
@@ -42,7 +42,7 @@ public class WorkoutDayController {
 	@GetMapping("")
 	public ResponseEntity<ApiResponse> getAllWorkoutDays() {
 		try {
-			List<WorkoutDay> workoutDays = workoutDayService.getAllWorkoutDays();
+			List<Day> workoutDays = dayService.getAllDays();
 			return ResponseEntity.ok(new ApiResponse("Success", workoutDays));
 		} catch (Exception e) {
 			return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
@@ -52,7 +52,7 @@ public class WorkoutDayController {
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse> getWorkoutDayById(@PathVariable("id") Long id) {
 		try {
-			WorkoutDay day = workoutDayService.getWorkoutDayById(id);
+			Day day = dayService.getDayById(id);
 			return ResponseEntity.ok(new ApiResponse("Success", day));
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));

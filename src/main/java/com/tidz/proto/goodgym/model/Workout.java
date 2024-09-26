@@ -30,8 +30,8 @@ public class Workout {
 
 	@JsonIgnore
 	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
-	@JoinColumn(name = "workout_day_id")
-	private WorkoutDay workoutDay;
+	@JoinColumn(name = "day_id")
+	private Day day;
 
 	public Long getId() {
 		return id;
@@ -65,12 +65,12 @@ public class Workout {
 		this.score = score;
 	}
 
-	public WorkoutDay getWorkoutDay() {
-		return workoutDay;
+	public Day getDay() {
+		return day;
 	}
 
-	public void setWorkoutDay(WorkoutDay workoutDay) {
-		this.workoutDay = workoutDay;
+	public void setDay(Day day) {
+		this.day = day;
 	}
 
 }

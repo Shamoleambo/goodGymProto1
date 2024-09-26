@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.model.Workout;
-import com.tidz.proto.goodgym.model.WorkoutDay;
+import com.tidz.proto.goodgym.model.Day;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 import com.tidz.proto.goodgym.repository.WorkoutRepository;
-import com.tidz.proto.goodgym.repository.WorkoutDayRepository;
+import com.tidz.proto.goodgym.repository.DayRepository;
 
 import jakarta.transaction.Transactional;
 
@@ -20,13 +20,13 @@ public class WorkoutService {
 
 	private final WorkoutRepository workoutRepository;
 	private final ExerciseRepository exerciseRepository;
-	private final WorkoutDayRepository workoutDayRepository;
+	private final DayRepository dayRepository;
 
 	public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository,
-			WorkoutDayRepository workoutDayRepository) {
+			DayRepository dayRepository) {
 		this.workoutRepository = workoutRepository;
 		this.exerciseRepository = exerciseRepository;
-		this.workoutDayRepository = workoutDayRepository;
+		this.dayRepository = dayRepository;
 	}
 
 	@Transactional
@@ -58,13 +58,13 @@ public class WorkoutService {
 		Workout routine = workoutRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 
-		WorkoutDay day = this.findWorkoutDayThatContainsExerciseRoutine(routine);
+		Day day = this.findWorkoutDayThatContainsExerciseRoutine(routine);
 
-		routine.setWorkoutDay(updtRoutine.getWorkoutDay());
+		routine.setDay(updtRoutine.getDay());
 		routine.setLoad(updtRoutine.getLoad());
 		routine.setExercise(exercise);
 		routine.setScore(updtRoutine.getScore());
-		routine.setWorkoutDay(day);
+		routine.setDay(day);
 
 		day.calculateScore(day.getWorkout());
 
@@ -85,8 +85,8 @@ public class WorkoutService {
 		});
 	}
 
-	public WorkoutDay findWorkoutDayThatContainsExerciseRoutine(Workout routine) {
-		return workoutDayRepository.findAll().stream().filter(workoutDay -> workoutDay.getWorkout().contains(routine))
+	public Day findWorkoutDayThatContainsExerciseRoutine(Workout routine) {
+		return dayRepository.findAll().stream().filter(workoutDay -> workoutDay.getWorkout().contains(routine))
 				.findFirst().orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
 	}
 

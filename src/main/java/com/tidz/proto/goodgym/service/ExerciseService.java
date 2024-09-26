@@ -8,7 +8,7 @@ import com.tidz.proto.goodgym.exceptions.ResourceAlreadyExistsException;
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.model.Workout;
-import com.tidz.proto.goodgym.model.WorkoutDay;
+import com.tidz.proto.goodgym.model.Day;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 
 import jakarta.transaction.Transactional;
@@ -60,7 +60,7 @@ public class ExerciseService {
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find Exercise with id " + id));
 
 		for (Workout routine : exercise.getWorkout()) {
-			WorkoutDay day = workoutService.findWorkoutDayThatContainsExerciseRoutine(routine);
+			Day day = workoutService.findWorkoutDayThatContainsExerciseRoutine(routine);
 			day.getWorkout().remove(routine);
 			day.calculateScore(day.getWorkout());
 		}
