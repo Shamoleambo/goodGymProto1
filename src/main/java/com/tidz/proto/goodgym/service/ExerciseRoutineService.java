@@ -85,7 +85,7 @@ public class ExerciseRoutineService {
 		});
 	}
 
-	private WorkoutDay findWorkoutDayThatContainsExerciseRoutine(ExerciseRoutine routine) {
+	public WorkoutDay findWorkoutDayThatContainsExerciseRoutine(ExerciseRoutine routine) {
 		return workoutRepository.findAll().stream().filter(workoutDay -> workoutDay.getWorkout().contains(routine))
 				.findFirst().orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
 	}
