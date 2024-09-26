@@ -30,8 +30,7 @@ public class Exercise {
 	@Enumerated(EnumType.STRING)
 	private BodyArea bodyArea;
 
-	@OneToMany(mappedBy = "exercise", cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST,
-			CascadeType.REFRESH })
+	@OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
 	private List<ExerciseRoutine> routines;
 
