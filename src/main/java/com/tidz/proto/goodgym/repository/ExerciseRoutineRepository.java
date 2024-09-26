@@ -2,8 +2,8 @@ package com.tidz.proto.goodgym.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.tidz.proto.goodgym.model.ExerciseRoutine;
+import com.tidz.proto.goodgym.model.Workout;
 
-public interface ExerciseRoutineRepository extends JpaRepository<ExerciseRoutine, Long> {
+public interface ExerciseRoutineRepository extends JpaRepository<Workout, Long> {
 
 }

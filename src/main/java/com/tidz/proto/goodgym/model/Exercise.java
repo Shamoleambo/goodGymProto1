@@ -32,7 +32,7 @@ public class Exercise {
 
 	@OneToMany(mappedBy = "exercise", cascade = CascadeType.ALL, orphanRemoval = true)
 	@JsonIgnore
-	private List<ExerciseRoutine> routines;
+	private List<Workout> workout;
 
 	public Exercise() {
 
@@ -68,12 +68,12 @@ public class Exercise {
 		this.bodyArea = bodyArea;
 	}
 
-	public List<ExerciseRoutine> getRoutines() {
-		return routines;
+	public List<Workout> getWorkout() {
+		return workout;
 	}
 
-	public void setRoutines(List<ExerciseRoutine> routines) {
-		this.routines = routines;
+	public void setWorkout(List<Workout> workout) {
+		this.workout = workout;
 	}
 
 }

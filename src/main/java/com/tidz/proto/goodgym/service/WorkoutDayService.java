@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
-import com.tidz.proto.goodgym.model.ExerciseRoutine;
+import com.tidz.proto.goodgym.model.Workout;
 import com.tidz.proto.goodgym.model.WorkoutDay;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 import com.tidz.proto.goodgym.repository.WorkoutDayRepository;
@@ -27,7 +27,7 @@ public class WorkoutDayService {
 
 	@Transactional
 	public WorkoutDay save(WorkoutDay day) {
-		for (ExerciseRoutine routine : day.getWorkout()) {
+		for (Workout routine : day.getWorkout()) {
 			Exercise exercise = Optional.ofNullable(exerciseRepository.findByName(routine.getExercise().getName()))
 					.orElseGet(() -> {
 						Exercise newExercise = new Exercise(routine.getExercise().getName(),

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
-import com.tidz.proto.goodgym.model.ExerciseRoutine;
+import com.tidz.proto.goodgym.model.Workout;
 import com.tidz.proto.goodgym.model.WorkoutDay;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 import com.tidz.proto.goodgym.repository.ExerciseRoutineRepository;
@@ -30,7 +30,7 @@ public class ExerciseRoutineService {
 	}
 
 	@Transactional
-	public ExerciseRoutine save(ExerciseRoutine exerciseRoutine) {
+	public Workout save(Workout exerciseRoutine) {
 		Exercise exercise = Optional.ofNullable(exerciseRepository.findByName(exerciseRoutine.getExercise().getName()))
 				.orElseGet(() -> {
 					Exercise newExercise = new Exercise(exerciseRoutine.getExercise().getName(),
@@ -42,20 +42,20 @@ public class ExerciseRoutineService {
 		return exerciseRoutineRepository.save(exerciseRoutine);
 	}
 
-	public List<ExerciseRoutine> getAllExercises() {
+	public List<Workout> getAllExercises() {
 		return exerciseRoutineRepository.findAll();
 	}
 
-	public ExerciseRoutine getExerciseById(Long id) {
+	public Workout getExerciseById(Long id) {
 		return exerciseRoutineRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 	}
 
 	@Transactional
-	public ExerciseRoutine updateExercise(Long id, ExerciseRoutine updtRoutine) {
+	public Workout updateExercise(Long id, Workout updtRoutine) {
 		Exercise exercise = this.findExerciseByNameOrCreateANewOne(updtRoutine);
 
-		ExerciseRoutine routine = exerciseRoutineRepository.findById(id)
+		Workout routine = exerciseRoutineRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 
 		WorkoutDay day = this.findWorkoutDayThatContainsExerciseRoutine(routine);
@@ -78,14 +78,14 @@ public class ExerciseRoutineService {
 		});
 	}
 
-	private Exercise findExerciseByNameOrCreateANewOne(ExerciseRoutine routine) {
+	private Exercise findExerciseByNameOrCreateANewOne(Workout routine) {
 		return Optional.ofNullable(exerciseRepository.findByName(routine.getExercise().getName())).orElseGet(() -> {
 			Exercise newExercise = new Exercise(routine.getExercise().getName(), routine.getExercise().getBodyArea());
 			return exerciseRepository.save(newExercise);
 		});
 	}
 
-	public WorkoutDay findWorkoutDayThatContainsExerciseRoutine(ExerciseRoutine routine) {
+	public WorkoutDay findWorkoutDayThatContainsExerciseRoutine(Workout routine) {
 		return workoutRepository.findAll().stream().filter(workoutDay -> workoutDay.getWorkout().contains(routine))
 				.findFirst().orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
 	}

@@ -12,15 +12,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
-public class ExerciseRoutine {
+public class Workout {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "exercise_load", nullable = false)
-	private Double exerciseLoad;
+	@Column(name = "load", nullable = false)
+	private Double load;
 	@Column(name = "score", nullable = false)
 	private Integer score;
 
@@ -49,12 +49,12 @@ public class ExerciseRoutine {
 		this.exercise = exercise;
 	}
 
-	public Double getExerciseLoad() {
-		return exerciseLoad;
+	public Double getLoad() {
+		return load;
 	}
 
-	public void setExerciseLoad(Double exerciseLoad) {
-		this.exerciseLoad = exerciseLoad;
+	public void setLoad(Double load) {
+		this.load = load;
 	}
 
 	public Integer getScore() {

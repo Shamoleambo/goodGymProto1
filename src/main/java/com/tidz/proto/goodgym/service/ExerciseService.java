@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.tidz.proto.goodgym.exceptions.ResourceAlreadyExistsException;
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
-import com.tidz.proto.goodgym.model.ExerciseRoutine;
+import com.tidz.proto.goodgym.model.Workout;
 import com.tidz.proto.goodgym.model.WorkoutDay;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 
@@ -59,7 +59,7 @@ public class ExerciseService {
 		Exercise exercise = exerciseRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find Exercise with id " + id));
 
-		for (ExerciseRoutine routine : exercise.getRoutines()) {
+		for (Workout routine : exercise.getRoutines()) {
 			WorkoutDay day = routineService.findWorkoutDayThatContainsExerciseRoutine(routine);
 			day.getWorkout().remove(routine);
 			day.calculateScore(day.getWorkout());
