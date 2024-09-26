@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
 
 @Entity
 public class ExerciseRoutine {
@@ -25,7 +24,7 @@ public class ExerciseRoutine {
 	@Column(name = "score", nullable = false)
 	private Integer score;
 
-	@ManyToOne(cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH })
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "exercise_id")
 	private Exercise exercise;
 
