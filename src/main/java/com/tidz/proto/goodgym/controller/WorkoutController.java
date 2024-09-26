@@ -20,18 +20,18 @@ import com.tidz.proto.goodgym.service.WorkoutService;
 
 @RestController
 @RequestMapping("/api/routines")
-public class ExerciseRoutineController {
+public class WorkoutController {
 
-	private final WorkoutService exerciseRoutineService;
+	private final WorkoutService workoutService;
 
-	public ExerciseRoutineController(WorkoutService exerciseService) {
-		this.exerciseRoutineService = exerciseService;
+	public WorkoutController(WorkoutService workoutService) {
+		this.workoutService = workoutService;
 	}
 
 	@PostMapping("")
 	public ResponseEntity<ApiResponse> save(@RequestBody Workout newExercise) {
 		try {
-			Workout exercise = exerciseRoutineService.save(newExercise);
+			Workout exercise = workoutService.save(newExercise);
 			return ResponseEntity.ok(new ApiResponse("Exercise Created", exercise));
 		} catch (Exception e) {
 			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(new ApiResponse(e.getMessage(), null));
@@ -40,14 +40,14 @@ public class ExerciseRoutineController {
 
 	@GetMapping("")
 	public ResponseEntity<ApiResponse> getAllExercises() {
-		List<Workout> exercises = exerciseRoutineService.getAllExercises();
+		List<Workout> exercises = workoutService.getAllExercises();
 		return ResponseEntity.ok(new ApiResponse("All Exercises", exercises));
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse> getExerciseById(@PathVariable("id") Long id) {
 		try {
-			Workout exercise = exerciseRoutineService.getExerciseById(id);
+			Workout exercise = workoutService.getExerciseById(id);
 			return ResponseEntity.ok(new ApiResponse("Exercise " + id, exercise));
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
@@ -55,10 +55,9 @@ public class ExerciseRoutineController {
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<ApiResponse> updateExercise(@PathVariable("id") Long id,
-			@RequestBody Workout updtExercise) {
+	public ResponseEntity<ApiResponse> updateExercise(@PathVariable("id") Long id, @RequestBody Workout updtExercise) {
 		try {
-			Workout exercise = exerciseRoutineService.updateExercise(id, updtExercise);
+			Workout exercise = workoutService.updateExercise(id, updtExercise);
 			return ResponseEntity.ok(new ApiResponse("Exercise updated", exercise));
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
@@ -68,7 +67,7 @@ public class ExerciseRoutineController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<ApiResponse> deleteExerciseById(@PathVariable("id") Long id) {
 		try {
-			exerciseRoutineService.deleteExercise(id);
+			workoutService.deleteExercise(id);
 			return ResponseEntity.ok(new ApiResponse("Exercise " + id + " deleted", null));
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
