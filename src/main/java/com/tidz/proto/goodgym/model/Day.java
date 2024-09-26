@@ -25,7 +25,7 @@ public class Day {
 	@Column(name = "total_score")
 	private Double totalScore;
 
-	@OneToMany(mappedBy = "workoutDay", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+	@OneToMany(mappedBy = "day", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	private List<Workout> workout;
 
 	public Day() {

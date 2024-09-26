@@ -19,8 +19,8 @@ public class Workout {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "load", nullable = false)
-	private Double load;
+	@Column(name = "weight", nullable = false)
+	private Double weight;
 	@Column(name = "score", nullable = false)
 	private Integer score;
 
@@ -49,12 +49,12 @@ public class Workout {
 		this.exercise = exercise;
 	}
 
-	public Double getLoad() {
-		return load;
+	public Double getWeight() {
+		return weight;
 	}
 
-	public void setLoad(Double load) {
-		this.load = load;
+	public void setWeight(Double weight) {
+		this.weight = weight;
 	}
 
 	public Integer getScore() {
