@@ -17,11 +17,11 @@ import jakarta.transaction.Transactional;
 public class ExerciseService {
 
 	private final ExerciseRepository exerciseRepository;
-	private final ExerciseRoutineService routineService;
+	private final WorkoutService workoutService;
 
-	public ExerciseService(ExerciseRepository exerciseRepository, ExerciseRoutineService routineService) {
+	public ExerciseService(ExerciseRepository exerciseRepository, WorkoutService workoutService) {
 		this.exerciseRepository = exerciseRepository;
-		this.routineService = routineService;
+		this.workoutService = workoutService;
 	}
 
 	@Transactional
@@ -59,8 +59,8 @@ public class ExerciseService {
 		Exercise exercise = exerciseRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find Exercise with id " + id));
 
-		for (Workout routine : exercise.getRoutines()) {
-			WorkoutDay day = routineService.findWorkoutDayThatContainsExerciseRoutine(routine);
+		for (Workout routine : exercise.getWorkout()) {
+			WorkoutDay day = workoutService.findWorkoutDayThatContainsExerciseRoutine(routine);
 			day.getWorkout().remove(routine);
 			day.calculateScore(day.getWorkout());
 		}

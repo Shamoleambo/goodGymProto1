@@ -10,23 +10,23 @@ import com.tidz.proto.goodgym.model.Exercise;
 import com.tidz.proto.goodgym.model.Workout;
 import com.tidz.proto.goodgym.model.WorkoutDay;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
-import com.tidz.proto.goodgym.repository.ExerciseRoutineRepository;
+import com.tidz.proto.goodgym.repository.WorkoutRepository;
 import com.tidz.proto.goodgym.repository.WorkoutDayRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
-public class ExerciseRoutineService {
+public class WorkoutService {
 
-	private final ExerciseRoutineRepository exerciseRoutineRepository;
+	private final WorkoutRepository workoutRepository;
 	private final ExerciseRepository exerciseRepository;
-	private final WorkoutDayRepository workoutRepository;
+	private final WorkoutDayRepository workoutDayRepository;
 
-	public ExerciseRoutineService(ExerciseRoutineRepository exerciseRoutineRepository,
-			ExerciseRepository exerciseRepository, WorkoutDayRepository workoutRepository) {
-		this.exerciseRoutineRepository = exerciseRoutineRepository;
-		this.exerciseRepository = exerciseRepository;
+	public WorkoutService(WorkoutRepository workoutRepository, ExerciseRepository exerciseRepository,
+			WorkoutDayRepository workoutDayRepository) {
 		this.workoutRepository = workoutRepository;
+		this.exerciseRepository = exerciseRepository;
+		this.workoutDayRepository = workoutDayRepository;
 	}
 
 	@Transactional
@@ -39,15 +39,15 @@ public class ExerciseRoutineService {
 				});
 
 		exerciseRoutine.setExercise(exercise);
-		return exerciseRoutineRepository.save(exerciseRoutine);
+		return workoutRepository.save(exerciseRoutine);
 	}
 
 	public List<Workout> getAllExercises() {
-		return exerciseRoutineRepository.findAll();
+		return workoutRepository.findAll();
 	}
 
 	public Workout getExerciseById(Long id) {
-		return exerciseRoutineRepository.findById(id)
+		return workoutRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 	}
 
@@ -55,25 +55,25 @@ public class ExerciseRoutineService {
 	public Workout updateExercise(Long id, Workout updtRoutine) {
 		Exercise exercise = this.findExerciseByNameOrCreateANewOne(updtRoutine);
 
-		Workout routine = exerciseRoutineRepository.findById(id)
+		Workout routine = workoutRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 
 		WorkoutDay day = this.findWorkoutDayThatContainsExerciseRoutine(routine);
 
 		routine.setWorkoutDay(updtRoutine.getWorkoutDay());
-		routine.setExerciseLoad(updtRoutine.getExerciseLoad());
+		routine.setLoad(updtRoutine.getLoad());
 		routine.setExercise(exercise);
 		routine.setScore(updtRoutine.getScore());
 		routine.setWorkoutDay(day);
 
 		day.calculateScore(day.getWorkout());
 
-		return exerciseRoutineRepository.save(routine);
+		return workoutRepository.save(routine);
 	}
 
 	@Transactional
 	public void deleteExercise(Long id) {
-		exerciseRoutineRepository.findById(id).ifPresentOrElse(exerciseRoutineRepository::delete, () -> {
+		workoutRepository.findById(id).ifPresentOrElse(workoutRepository::delete, () -> {
 			throw new ResourceNotFoundException("Could not find the Exercise " + id);
 		});
 	}
@@ -86,7 +86,7 @@ public class ExerciseRoutineService {
 	}
 
 	public WorkoutDay findWorkoutDayThatContainsExerciseRoutine(Workout routine) {
-		return workoutRepository.findAll().stream().filter(workoutDay -> workoutDay.getWorkout().contains(routine))
+		return workoutDayRepository.findAll().stream().filter(workoutDay -> workoutDay.getWorkout().contains(routine))
 				.findFirst().orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
 	}
 
