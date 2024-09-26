@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import com.tidz.proto.goodgym.exceptions.ResourceAlreadyExistsException;
 import com.tidz.proto.goodgym.exceptions.ResourceNotFoundException;
 import com.tidz.proto.goodgym.model.Exercise;
+import com.tidz.proto.goodgym.model.ExerciseRoutine;
+import com.tidz.proto.goodgym.model.WorkoutDay;
 import com.tidz.proto.goodgym.repository.ExerciseRepository;
 
 import jakarta.transaction.Transactional;
@@ -15,9 +17,11 @@ import jakarta.transaction.Transactional;
 public class ExerciseService {
 
 	private final ExerciseRepository exerciseRepository;
+	private final ExerciseRoutineService routineService;
 
-	public ExerciseService(ExerciseRepository exerciseRepository) {
+	public ExerciseService(ExerciseRepository exerciseRepository, ExerciseRoutineService routineService) {
 		this.exerciseRepository = exerciseRepository;
+		this.routineService = routineService;
 	}
 
 	@Transactional
@@ -52,7 +56,16 @@ public class ExerciseService {
 
 	@Transactional
 	public void deleteExerciseById(Long id) {
-		exerciseRepository.deleteById(id);
+		Exercise exercise = exerciseRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Could not find Exercise with id " + id));
+
+		for (ExerciseRoutine routine : exercise.getRoutines()) {
+			WorkoutDay day = routineService.findWorkoutDayThatContainsExerciseRoutine(routine);
+			day.getWorkout().remove(routine);
+			day.calculateScore(day.getWorkout());
+		}
+
+		exerciseRepository.delete(exercise);
 	}
 
 }
