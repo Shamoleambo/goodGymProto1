@@ -42,37 +42,37 @@ public class WorkoutService {
 		return workoutRepository.save(workout);
 	}
 
-	public List<Workout> getAllExercises() {
+	public List<Workout> getAllWorkouts() {
 		return workoutRepository.findAll();
 	}
 
-	public Workout getExerciseById(Long id) {
+	public Workout getWorkoutById(Long id) {
 		return workoutRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 	}
 
 	@Transactional
-	public Workout updateExercise(Long id, Workout updtWorkout) {
+	public Workout updateWorkout(Long id, Workout updtWorkout) {
 		Exercise exercise = this.findExerciseByNameOrCreateANewOne(updtWorkout);
 
-		Workout routine = workoutRepository.findById(id)
+		Workout workout = workoutRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find the Exercise " + id));
 
-		Day day = this.findWorkoutDayThatContainsExerciseRoutine(routine);
+		Day day = this.findDayThatContainsWorkout(workout);
 
-		routine.setDay(updtWorkout.getDay());
-		routine.setWeight(updtWorkout.getWeight());
-		routine.setExercise(exercise);
-		routine.setScore(updtWorkout.getScore());
-		routine.setDay(day);
+		workout.setDay(updtWorkout.getDay());
+		workout.setWeight(updtWorkout.getWeight());
+		workout.setExercise(exercise);
+		workout.setScore(updtWorkout.getScore());
+		workout.setDay(day);
 
 		day.calculateScore(day.getWorkout());
 
-		return workoutRepository.save(routine);
+		return workoutRepository.save(workout);
 	}
 
 	@Transactional
-	public void deleteExercise(Long id) {
+	public void deleteWorkout(Long id) {
 		workoutRepository.findById(id).ifPresentOrElse(workoutRepository::delete, () -> {
 			throw new ResourceNotFoundException("Could not find the Exercise " + id);
 		});
@@ -85,7 +85,7 @@ public class WorkoutService {
 		});
 	}
 
-	public Day findWorkoutDayThatContainsExerciseRoutine(Workout workout) {
+	public Day findDayThatContainsWorkout(Workout workout) {
 		return dayRepository.findAll().stream().filter(workoutDay -> workoutDay.getWorkout().contains(workout))
 				.findFirst().orElseThrow(() -> new ResourceNotFoundException("workout day not found"));
 	}

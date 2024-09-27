@@ -77,7 +77,7 @@ public class ExerciseController {
 	public ResponseEntity<ApiResponse> deleteExercise(@PathVariable("id") Long id) {
 		try {
 			exerciseService.deleteExerciseById(id);
-			return ResponseEntity.ok(new ApiResponse("Success", null));
+			return ResponseEntity.ok(new ApiResponse("Exercise with id " + id + " deleted", null));
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
 		}

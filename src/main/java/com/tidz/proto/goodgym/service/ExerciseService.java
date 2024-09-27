@@ -60,7 +60,7 @@ public class ExerciseService {
 				.orElseThrow(() -> new ResourceNotFoundException("Could not find Exercise with id " + id));
 
 		for (Workout workout : exercise.getWorkout()) {
-			Day day = workoutService.findWorkoutDayThatContainsExerciseRoutine(workout);
+			Day day = workoutService.findDayThatContainsWorkout(workout);
 			day.getWorkout().remove(workout);
 			day.calculateScore(day.getWorkout());
 		}
